@@ -47,8 +47,6 @@ namespace sever
         {
             while (true)
             {
-
-               
                 Socket socket = listener.AcceptSocket();
                 Console.WriteLine("Connection received from: {0}! " + socket.RemoteEndPoint);
                 try
@@ -111,14 +109,13 @@ namespace sever
                     }
                     // 4. close
                     stream.Close();
-                    socket.Close();
-                    listener.Stop();
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Error: " + ex);
                 }
-                Console.Read();
+                Console.WriteLine("Client disconnected: {0}", socket.RemoteEndPoint);
+                socket.Close();
             }
         }
     }
