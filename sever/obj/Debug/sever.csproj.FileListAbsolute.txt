@@ -1,0 +1,6 @@
+D:\Lập trình mạng\sever\sever\bin\Debug\sever.exe.config
+D:\Lập trình mạng\sever\sever\bin\Debug\sever.exe
+D:\Lập trình mạng\sever\sever\bin\Debug\sever.pdb
+D:\Lập trình mạng\sever\sever\obj\Debug\sever.exe
+D:\Lập trình mạng\sever\sever\obj\Debug\sever.pdb
+D:\Lập trình mạng\sever\sever\obj\Debug\sever.csprojResolveAssemblyReference.cache
