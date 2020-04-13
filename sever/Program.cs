@@ -22,9 +22,9 @@ namespace sever
         {
             {"1","Thomas"},
             {"2","John"},
-            {"1","Niki"},
-            {"1","Tom"},
-            {"1","Rose"},
+            {"3","Niki"},
+            {"4","Tom"},
+            {"5","Rose"},
         };
         public static void Main()
         {
