@@ -20,18 +20,24 @@ namespace sever
         static ASCIIEncoding encoding = new ASCIIEncoding();
         static Dictionary<string, string> _data = new Dictionary<string, string>
         {
-            {"1","Thomas"},
-            {"2","John"},
-            {"3","Niki"},
-            {"4","Tom"},
-            {"5","Rose"},
+            {"0","Zero"},
+            {"1","One"},
+            {"2","Two"},
+            {"3","Three"},
+            {"4","Four"},
+            {"5","Five"},
+            {"6","Six"},
+            {"7","Seven"},
+            {"8","Eight"},
+            {"9","Nine"},   
+            {"10","Ten"},
         };
         public static void Main()
         {
 
             IPAddress address = IPAddress.Parse("127.0.0.1");
 
-            TcpListener listener = new TcpListener(address, PORT_NUMBER);
+            listener = new TcpListener(address, PORT_NUMBER);
 
             // 1. listen
             listener.Start();
@@ -49,66 +55,40 @@ namespace sever
             {
                 Socket socket = listener.AcceptSocket();
                 Console.WriteLine("Connection received from: {0}! " + socket.RemoteEndPoint);
+                StringBuilder sb = new StringBuilder();
+                sb.Append("IP:Port of Client: "+socket.RemoteEndPoint+";"+"Connect At: "+DateTime.Now);
+                File.AppendAllText("D://Access.log", sb.ToString());
+                sb.Clear();
                 try
                 {
                     var stream = new NetworkStream(socket);
                     var reader = new StreamReader(stream);
                     var writer = new StreamWriter(stream);
                     writer.AutoFlush = true;
-                    writer.WriteLine("Welcom to server");
-                    writer.WriteLine("Please enter id:");
+                    
                     while (true)
                     {
-                        // 2. receive
                         string str = reader.ReadLine();
+                        
+                     
                         if (String.IsNullOrEmpty(str))
                             break;
-                        if (_data.ContainsKey(str))
-                        {
-                            if (str.ToUpper() == "EXIT")
+                        if (str.ToUpper() == "EXIT")
                             {
                                 writer.WriteLine("bye");
+                                sb.Append(";Disconnect At: " + DateTime.Now+";"+"Reason: Closed By Client\n");
+                                File.AppendAllText("D://access.log", sb.ToString());
+                                sb.Clear();
                                 break;
                             }
                             // 3. send
-                            switch (str)
-                            {
-                                case "0":
-                                    writer.WriteLine("Zero");
-                                    break;
-                                case "1":
-                                    writer.WriteLine("One");
-                                    break;
-                                case "2":
-                                    writer.WriteLine("Two");
-                                    break;
-                                case "3":
-                                    writer.WriteLine("Three");
-                                    break;
-                                case "4":
-                                    writer.WriteLine("Four");
-                                    break;
-                                case "5":
-                                    writer.WriteLine("Five");
-                                    break;
-                                case "6":
-                                    writer.WriteLine("Six");
-                                    break;
-                                case "7":
-                                    writer.WriteLine("Seven");
-                                    break;
-                                case "8":
-                                    writer.WriteLine("Eight");
-                                    break;
-                                case "9":
-                                    writer.WriteLine("Nine");
-                                    break;
-                            }
+                        if (_data.ContainsKey(id))
+                            writer.WriteLine("Number you've entered: '{0}'", _data[id]);
+                        else
+                            writer.WriteLine("Number is not valid !");
                         }
-                        else writer.WriteLine("Can't find id");
-                    }
-                    // 4. close
-                    stream.Close();
+                       stream.Close(); 
+                    
                 }
                 catch (Exception ex)
                 {
