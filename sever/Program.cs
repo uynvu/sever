@@ -40,15 +40,32 @@ namespace sever
             listener = new TcpListener(address, PORT_NUMBER);
 
             // 1. listen
+            listener = new TcpListener(address, PORT_NUMBER);
+            Console.WriteLine("SERVER MULTI CLIENT CONNECTION - CODING BY NTK - 74458");
+            Console.WriteLine("Waiting for connection...");
             listener.Start();
-
-            Console.WriteLine("Server started on " + listener.LocalEndpoint);
-            Console.WriteLine("Waiting for a connection...");
             for (int i = 0; i < MAX_CONNECTION; i++)
             {
-                new Thread(DoWork).Start();
+                Socket soc = listener.AcceptSocket();
+                StringBuilder sb = new StringBuilder();
+                StringBuilder sb1 = new StringBuilder();
+                string IPConnected = sb1.ToString();
+                if (IPConnected.Contains(soc.RemoteEndPoint.ToString()))
+                {
+                    Console.WriteLine("429 Many Request");
+                    sb.Append("IP:Port of Client: " + soc.RemoteEndPoint + ";" + "Disconnect At: " + DateTime.Now+";Reason : 429 Many Request");
+                    File.AppendAllText("D://Access.log", sb.ToString());
+                    sb.Clear();
+                }
+                else
+                {
+                    new Thread(DoWork).Start();
+                    sb1.Append(soc.RemoteEndPoint);
+                    File.AppendAllText("ConnectedIP.txt", sb1.ToString());
+                }
             }
         }
+        
         static void DoWork()
         {
             while (true)
@@ -58,7 +75,7 @@ namespace sever
                 StringBuilder sb = new StringBuilder();
                 sb.Append("IP:Port of Client: "+socket.RemoteEndPoint+";"+"Connect At: "+DateTime.Now);
                 File.AppendAllText("D://Access.log", sb.ToString());
-                sb.Clear();
+                
                 try
                 {
                     var stream = new NetworkStream(socket);
